@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <!-- 仅包含必要的输入框、按钮和状态提示 -->
+  <textarea id="content" rows="8" cols="60" placeholder="请输入要发送的内容..."></textarea><br>
+  <button onclick="sendToEmail()">发送到邮箱</button>
+  <p id="status"></p>
+
+  <script>
+    // 发送内容到后端API
+    async function sendToEmail() {
+      const content = document.getElementById('content').value;
+      const statusEl = document.getElementById('status');
+      
+      if (!content.trim()) {
+        statusEl.textContent = '请输入内容';
+        return;
+      }
+
+      try {
+        // 注意：这里需要替换为你后面部署的后端API地址
+        const response = await fetch('https://你的后端地址.vercel.app/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content: content })
+        });
+
+        if (response.ok) {
+          statusEl.textContent = '发送成功！';
+          document.getElementById('content').value = ''; // 清空输入框
+        } else {
+          statusEl.textContent = '发送失败';
+        }
+      } catch (error) {
+        statusEl.textContent = '网络错误';
+      }
+    }
+  </script>
+</body>
+</html>
+    
